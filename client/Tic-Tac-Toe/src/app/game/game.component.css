@@ -1,0 +1,19 @@
+
+
+.column{
+    border: 2px solid black;
+    width: 30vh;
+    height: 30vh;
+    padding: auto;
+    margin: auto;
+    display: inline-block;
+}
+.row{
+    border: 2px solid red;
+    width:fit-content;
+    height:fit-content;
+}
+img{
+    width: 30vh;
+    height: 30vh;
+}

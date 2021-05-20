@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="row" #row1>
+        <div class="column" (click)="sendIMGsrc(col1)"></div>
+        <div class="column" (click)="sendIMGsrc(col2)" ></div>
+        <div class="column" (click)="sendIMGsrc(col3)" ></div>
+    </div>
+    <div class="row" #row2>
+        <div class="column" (click)="sendIMGsrc(col4)" ></div>
+        <div class="column" (click)="sendIMGsrc(col5)" ></div>
+        <div class="column" (click)="sendIMGsrc(col6)" ></div>
+    </div>
+    <div class="row" #row3>
+        <div class="column" (click)="sendIMGsrc(col7)" ></div>
+        <div class="column" (click)="sendIMGsrc(col8)" ></div>
+        <div class="column" (click)="sendIMGsrc(col9)" ></div>
+    </div>
+</div>
+
+<div id='chat' #chat></div><br>
+<input #message id="message" placeholder="Enter message">
+<button (click)=sendMessage()>submit</button> <br>

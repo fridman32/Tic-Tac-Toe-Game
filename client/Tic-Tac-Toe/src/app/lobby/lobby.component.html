@@ -1,0 +1,31 @@
+<div>
+    <div style="display: flex;">
+      <button (click)="emitNumber()">emit data</button>
+      <button (click)="emitroom2()">join room 2</button>
+      <button (click)="emitroom3()">join room 3</button> <br>
+      <button routerLink="/game" routerLinkActive="active" *ngIf="join" (click)=emitJoinGame(data)>{{data.sender}} invited you to game</button>
+    </div>
+    <input [(ngModel)]="someNumber"/>
+    <h1>{{data}} </h1> <br>
+  </div>
+  <div>
+    <!-- <li *ngFor="let user of UserList; index as i; first as isFirst">
+      <button (click)="emitInvite(user)" #userid>{{i+1}}/{{UserList.length}}. {{user}} - {{userNameFromCookie}} </button>
+    </li> -->
+    <!-- this is for chat -->
+    <li *ngFor="let user of userNamelist; index as i; first as isFirst">
+      <button (click)='Onuserselect(user)'> {{user}} - chat </button>
+    </li> <br>
+
+    <!-- this is for game invite -->
+    <li *ngFor="let user of userNamelist; index as i; first as isFirst">
+      <button (click)="emitInvite(user)"> {{user}} -game invite </button>
+    </li>
+
+  </div>
+  <div *ngIf="chat">
+    <form>
+    <input #message id="message" placeholder="Enter message">
+    <button (click)=sendMessage()>submit</button>
+  </form>
+</div>
