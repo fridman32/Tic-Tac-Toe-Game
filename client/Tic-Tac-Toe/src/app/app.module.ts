@@ -10,6 +10,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CellComponent } from './cell/cell.component';
 
 const socketioConfig: SocketIoConfig = { url: 'http://localhost:1000', options: {} };
 
@@ -19,7 +20,8 @@ const socketioConfig: SocketIoConfig = { url: 'http://localhost:1000', options: 
     GameComponent,
     MenuComponent,
     LobbyComponent,
-    SignUpComponent
+    SignUpComponent,
+    CellComponent
   ],
   imports: [
     HttpClientModule,

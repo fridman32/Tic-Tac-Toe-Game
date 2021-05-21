@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <div class="row" #row1>
         <div class="column" (click)="sendIMGsrc(col1)"></div>
         <div class="column" (click)="sendIMGsrc(col2)" ></div>
@@ -18,4 +18,16 @@
 
 <div id='chat' #chat></div><br>
 <input #message id="message" placeholder="Enter message">
-<button (click)=sendMessage()>submit</button> <br>
+<button (click)=sendMessage()>submit</button> <br> -->
+
+<div>
+    <div class="status text-center p-4">
+        {{ statusMessage}}
+    </div>
+    <div class="board" *ngFor="let row of [0,1,2]">
+        <app-cell *ngFor="let col of [0,1,2]" [row]="row" [col]="col" [piece]="board[row][col]"
+            (click)="move(row, col)"></app-cell>
+    </div>
+    <div class="pt-2"></div>
+    <button *ngIf="gameOver" class="btn btn-primary new-game" (click)="newGame()">New Game</button>
+</div>
