@@ -1,33 +1,20 @@
-<!-- <div class="container">
-    <div class="row" #row1>
-        <div class="column" (click)="sendIMGsrc(col1)"></div>
-        <div class="column" (click)="sendIMGsrc(col2)" ></div>
-        <div class="column" (click)="sendIMGsrc(col3)" ></div>
-    </div>
-    <div class="row" #row2>
-        <div class="column" (click)="sendIMGsrc(col4)" ></div>
-        <div class="column" (click)="sendIMGsrc(col5)" ></div>
-        <div class="column" (click)="sendIMGsrc(col6)" ></div>
-    </div>
-    <div class="row" #row3>
-        <div class="column" (click)="sendIMGsrc(col7)" ></div>
-        <div class="column" (click)="sendIMGsrc(col8)" ></div>
-        <div class="column" (click)="sendIMGsrc(col9)" ></div>
-    </div>
-</div>
-
-<div id='chat' #chat></div><br>
-<input #message id="message" placeholder="Enter message">
-<button (click)=sendMessage()>submit</button> <br> -->
-
 <div>
     <div class="status text-center p-4">
         {{ statusMessage}}
     </div>
     <div class="board" *ngFor="let row of [0,1,2]">
-        <app-cell *ngFor="let col of [0,1,2]" [row]="row" [col]="col" [piece]="board[row][col]"
-            (click)="move(row, col)"></app-cell>
+        <app-cell #cellID *ngFor="let col of [0,1,2]" [row]="row" [col]="col" [piece]="board[row][col]"
+            (click)="emitMove(row, col)"></app-cell>
     </div>
     <div class="pt-2"></div>
-    <button *ngIf="gameOver" class="btn btn-primary new-game" (click)="newGame()">New Game</button>
+    <button *ngIf="gameOver" class="btn btn-primary new-game" (click)="emitNewGame()">New Game</button>
+</div>
+
+<div >
+    <form>
+        <input #message id="message" placeholder="Enter message">
+        <button (click)=emitMessage(message.value)>submit</button>
+        <p #messageShow [innerHTML]="messageData"></p>
+        <!-- {{messageData}} -->
+    </form>
 </div>

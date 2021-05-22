@@ -21,6 +21,7 @@ export class LobbyComponent implements OnInit {
   userNamelist: string[] = [];
   reciver;
   sender;
+  isInv: boolean;
 
   constructor(private router: Router,
     private socket: Socket,
@@ -113,8 +114,6 @@ export class LobbyComponent implements OnInit {
     this.socket.emit('InviteAccapted', data)
   }
 
-
-
   Onuserselect(name) {
     this.reciver = name;
     this.chat = true;
@@ -128,4 +127,20 @@ export class LobbyComponent implements OnInit {
       mrssage: msg
     });
   }
+
+
+  disableList() {
+    for (let i = 0; i < this.UserList.length; i++) {
+      var element = <HTMLInputElement>document.getElementById(`${i}`);
+      element.disabled = true;
+    }
+  }
+  enableList() {
+    for (let i = 0; i < this.UserList.length; i++) {
+      var element = <HTMLInputElement>document.getElementById(`${i}`);
+      element.disabled = false;
+    }
+    this.isInv = false;
+  }
+
 }

@@ -10,38 +10,55 @@ import { CellEnum } from "../cell/CellEnum";
 })
 export class GameComponent implements OnInit {
 
-  // sender = ""
   // isXturn: boolean = true;
-  // divID;
 
-  // @ViewChild('message')
-  // private message: ElementRef;
+  @ViewChild('cellID')
+  private cellID: ElementRef;
 
-  // @ViewChild("game")
-  // private gameCanvas: ElementRef;
+  @ViewChild('message')
+  private message: ElementRef
 
-  // private context: any;
+  @ViewChild('messageShow')
+  private messageShow: ElementRef
 
   private currentPlayer: CellEnum;
   public board: CellEnum[][];
   private isGameOver: boolean;
   public statusMessage;
+  data = '';
+  chat = false
+  reciver;
+  sender;
+  messageData: string = "";
+  turnSign = "X";
+  xTurn: boolean;
 
   constructor(private socket: Socket,
     private userService: UserService) { }
 
   ngOnInit(): void {
-    // this.socket.on("new_message_ingame", (data) => {
-    //   var d1 = document.getElementById('chat');
-    //   d1.insertAdjacentHTML('beforeend', `<div> ${data.sender}: ${data.message}</div>`);
-    // })
-    // this.socket.on("changIMG", (data) => {
-    //   // this.divID = data;
-    //   this.play(data)
-    //   console.log(data);
-    //   // this.play(data);
-    // })
-    // this.sender = this.userService.current_user;
+    this.socket.on("getMySign", (data) =>{
+      if(this.userService.current_user == data.sender){
+        this.currentPlayer = CellEnum.X;
+      }else{
+        this.currentPlayer = CellEnum.O;
+      }
+    })
+    this.socket.on("move", (data) => {
+      // this.allowBTN();
+      this.move(data.row, data.col);
+    })
+    this.socket.on("newGame", (data) => {
+      this.newGame();
+    })
+    this.socket.on("turn", (data) => {
+      this.disableBTN();
+    })
+    this.socket.on("message", (data) => {
+      console.log(data);
+      console.log("line 54");
+      this.messageData = this.messageData + `<div>${data.sender}: ${data.message} <div/>`;
+    })
     this.newGame();
   }
 
@@ -50,6 +67,7 @@ export class GameComponent implements OnInit {
   }
 
   newGame() {
+
     this.board = [];
     for (let row = 0; row < 3; row++) {
       this.board[row] = [];
@@ -57,24 +75,58 @@ export class GameComponent implements OnInit {
         this.board[row][col] = CellEnum.EMPTY;
       }
     }
-    this.currentPlayer = CellEnum.X;
+    // this.currentPlayer = CellEnum.X;
     this.isGameOver = false;
     this.statusMessage = `Player ${this.currentPlayer}'s turn`;
+    if (this.turnSign === this.currentPlayer) {
+      this.xTurn = true;
+    }
   }
 
   move(row: number, col: number): void {
-    if (!this.isGameOver && this.board[row][col] === CellEnum.EMPTY) {
-      this.board[row][col] = this.currentPlayer;
-      if (this.isDrow()) {
-        this.statusMessage = 'its a Drow!'
-        this.isGameOver = true;
-      } else if (this.isWin()) {
-        this.statusMessage = `Player ${this.currentPlayer} Won !`;
-        this.isGameOver = true;
-      } else {
-        this.currentPlayer = this.currentPlayer === CellEnum.X ? CellEnum.O : CellEnum.X;
+    if (this.xTurn) {
+      if (!this.isGameOver && this.board[row][col] === CellEnum.EMPTY) {
+        this.board[row][col] = this.currentPlayer;
+        if (this.isDrow()) {
+          this.statusMessage = 'its a Drow!'
+          this.isGameOver = true;
+        } else if (this.isWin()) {
+          this.statusMessage = `Player ${this.currentPlayer} Won !`;
+          this.isGameOver = true;
+        } else {
+          this.currentPlayer = this.currentPlayer === CellEnum.X ? CellEnum.O : CellEnum.X;
+          this.statusMessage = `Player ${this.currentPlayer}'s turn`;
+        }
+        this.xTurn = !this.xTurn;
       }
+    } else {
+      alert("not your turn bitch !")
     }
+  }
+
+  emitMove(row: number, col: number) {
+    this.socket.emit('emitMove', { row: row, col: col, sender: this.userService.current_user, currentPlayer: this.currentPlayer })
+  }
+
+  emitNewGame() {
+    this.socket.emit('emitNewGame', { sender: this.userService.current_user })
+  }
+
+  emitTurn() {
+    this.socket.emit('emitTurn', { sender: this.userService.current_user })
+  }
+  emitMessage(inputMessage) {
+    console.log(inputMessage);
+
+    this.socket.emit('emitMessage', { sender: this.userService.current_user, message: inputMessage })
+  }
+
+  allowBTN() {
+    this.cellID.nativeElement.disabled = false;
+  }
+
+  disableBTN() {
+    this.cellID.nativeElement.disabled = true;
   }
 
   isDrow(): boolean {
@@ -123,34 +175,3 @@ export class GameComponent implements OnInit {
     return false;
   }
 }
-  // sendMessage() {
-  //   var msg = this.message.nativeElement.value
-  //   console.log(msg);
-  //   this.socket.emit('send_message_ingame', {
-  //     sender: this.sender,
-  //     message: msg
-  //   });
-  // }
-
-  // play(id) {
-  //   // this.divID = id;
-  //   if (this.isXturn === true) {
-  //     id.src = "/assets/images/X_img.png"
-  //     this.isXturn = false;
-  //   } else {
-  //     id.src = "/assets/images/O_img.jpg"
-  //     this.isXturn = true;
-  //   }
-  //   // this.socket.emit('setIMG', { ID: this.divID.src })
-  // }
-
-  // sendIMGsrc(id){
-  //   this.socket.emit('setIMG', { ID: id })
-  // }
-
-  // isGameOver() {
-
-  // }
-
-
-

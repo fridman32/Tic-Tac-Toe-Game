@@ -1,5 +1,5 @@
 export enum CellEnum{
     EMPTY = '',
-    X = "x",
+    X = "X",
     O = "O"
 }

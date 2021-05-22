@@ -116,8 +116,8 @@ io.on('connection', async (socket) => {
         listOfRooms[data.sender] = `room-${RoomNumber}`
         listOfRooms[data.reciver] = `room-${RoomNumber}`
         RoomNumber = RoomNumber + 1
-        listOfRoomNameS[data.sender + data.reciver] = data
-        socket.join(listOfRooms[data.sender])
+        listOfRoomNameS[data.sender + data.reciver] = data;
+        socket.join(listOfRooms[data.sender]);
         //find reciver and invite them to the room
         var socketid = listofUsersNames[data.reciver];
         io.to(socketid).emit("gameInvite", data);
@@ -131,6 +131,7 @@ io.on('connection', async (socket) => {
         //find sender to tell them join game
         var socketid = listofUsersNames[data.sender];
         io.to(socketid).emit("joinGame", data);
+        io.to(listOfRooms[data.sender]).emit("getMySign", data)
     })
 
     socket.on("user_conncted", (data) => {
@@ -141,16 +142,26 @@ io.on('connection', async (socket) => {
     })
 
     //grop msg in game
-    socket.on('send_message_ingame', (data) => {
-        //find room to send msg to
-        console.log(data);
-        var socketRoom = listOfRooms[data.sender]
-        console.log(socketRoom);
-        io.to(socketRoom).emit("new_message_ingame", data);
+    // socket.on('send_message_ingame', (data) => {
+    //     //find room to send msg to
+    //     console.log(data);
+    //     var socketRoom = listOfRooms[data.sender]
+    //     console.log(socketRoom);
+    //     io.to(socketRoom).emit("new_message_ingame", data);
+    // })
+
+    socket.on('emitMove', (data) =>{
+        io.to(listOfRooms[data.sender]).emit("move", data);
+    })
+    socket.on('emitNewGame', (data) =>{
+        io.to(listOfRooms[data.sender]).emit("newGame", data);
+    })
+    socket.on('emitTurn', (data)=>{
+        io.to(listOfRooms[data.sender].emit('turn'))
     })
 
-    socket.on('setIMG', (data) =>{
-        console.log(data);
-        io.emit('changIMG', data);
+    socket.on('emitMessage', (data) =>{
+        console.log(data.message);
+        io.to(listOfRooms[data.sender]).emit('message', data )
     })
 });
