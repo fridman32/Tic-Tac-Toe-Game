@@ -1,32 +1,22 @@
-<div>
-    <div style="display: flex;">
-      <!-- <button (click)="emitNumber()">emit data</button>
-      <button (click)="emitroom2()">join room 2</button>
-      <button (click)="emitroom3()">join room 3</button> <br> -->
-      <button routerLink="/game" routerLinkActive="active" *ngIf="join" (click)=emitJoinGame(data)>{{data.sender}} invited you to game</button>
-    </div>
-    <!-- <input [(ngModel)]="someNumber"/> -->
-    <h1>{{data}} </h1> <br>
-  </div>
-  <div>
-    <!-- <li *ngFor="let user of UserList; index as i; first as isFirst">
-      <button (click)="emitInvite(user)" #userid>{{i+1}}/{{UserList.length}}. {{user}} - {{userNameFromCookie}} </button>
-    </li> -->
-    <!-- this is for chat
-    <li *ngFor="let user of userNamelist; index as i; first as isFirst">
-      <button (click)='Onuserselect(user)'> {{user}} - chat </button>
-    </li> <br> -->
+<div class="container">
 
-    <!-- this is for game invite -->
+  <div class="grid-item invite" *ngIf="join">
+    <span>{{data.sender}} as invited you to a game:</span><br>
+    <button routerLink="/game" routerLinkActive="active" (click)=emitJoinGame(data) class="accept">accept</button>
+    <button id="decline" *ngIf="join" (click)="emitDecline(data)" class="cancel">decline</button>
+  </div>
+
+  <div class="grid-item ">
+    <button id="cancel" *ngIf="invitSent" (click)='cancelInvintation()' class="cancel">Cancel invite</button>
+  </div>
+
+
+
+  <div class="grid-item list">
+    <span>players online:</span>
     <li *ngFor="let user of userNamelist; index as i; first as isFirst">
-      <button (click)="emitInvite(user)"> {{user}} -game invite </button>
+      <button id="{{i}}" (click)="emitInvite(user)" style="color: black;"> {{user}} -game invite </button>
     </li>
-
   </div>
-  <div *ngIf="chat">
-    <form>
-    <input #message id="message" placeholder="Enter message">
-    <button (click)=sendMessage()>submit</button>
-  </form>
-</div>
 
+</div>

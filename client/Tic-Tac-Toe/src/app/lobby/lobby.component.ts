@@ -17,130 +17,98 @@ export class LobbyComponent implements OnInit {
   someNumber = 0;
   join = false
   chat = false
-  userNameFromCookie: string;
   userNamelist: string[] = [];
   reciver;
   sender;
   isInv: boolean;
+  isDisabletTrue: boolean = false;
+  invitSent: boolean;
 
   constructor(private router: Router,
     private socket: Socket,
     private service: UserService) { }
 
   ngOnInit(): void {
-    //work
     this.socket.on("login", (data) => {
-      this.userNameFromCookie = data
       this.userNamelist = data
       this.sender = this.service.current_user
     })
-    //work
-    this.socket.on("new_message", (data) => {
-      console.log(data + "new message");
-      this.data = this.data + '\n' + data.sender + ' say: ' + data.mrssage;
-    })
-    //wirte the number u write in the text box to the bord
-    //remove this shit
-    this.socket.on('recievedNumber', (data) => {
-      console.log(data);
-      this.data = data;
-    });
-    //remove this shit
-    //when u join this wirt to the bord you joined room num 1
-    this.socket.on('testEvent', (data) => {
-      console.log(data);
-      this.data = data;
-    });
-    //remove this shit
-    //when u click to join room num 2 this wirt to the bord you joined room num 2
-    this.socket.on('room2', (data) => {
-      console.log(data);
-      this.data = data
-      //remove this shit
-    }); //when u click to join room num 2 this wirt to the bord you joined room num 2
-    this.socket.on('room3', (data) => {
-      console.log(data);
-      this.data = data
-    });
 
     this.socket.on('joinGame', () => { this.router.navigate(['/game']) })
 
-    this.socket.on('welcome', (data) => {
-      console.log(data)
-      this.data = data;
+    this.socket.on('newUser', (data) => {
+      this.UserList = data
+      this.enableList();
     });
-
-    //say jhello to new user 
-    this.socket.on('hi', (data) => {
-      console.log(data);
-      this.data = data
-    });
-
-
-    //#region  just doses r the importent 
-    this.socket.on('newUser', (data) => { this.UserList = data });
 
     this.socket.on('gameInvite', (data) => {
       this.data = data;
       this.join = true;
     });
 
+    this.socket.on('cancelInvite', (data) => {
+      this.enableList();
+      this.invitSent = false;
+      this.join = false;
+      alert(`${data} cancel is Invite`)
+
+    })
+
+    this.socket.on('decline', (data) => {
+      this.enableList();
+      this.invitSent = false;
+      this.join = false;
+      alert('your oponent decline your inventation')
+    })
+    this.socket.emit("newUser")
+
   }
 
-  //remove this shit
-  //triger the node socket.on('emitNumber') func
-  emitNumber() {
-    this.socket.emit("emitNumber", this.someNumber)
-  }
-  //remove this shit
-  emitroom2() {
-    this.socket.emit("emitroom2")
-  }
-  //remove this shit
-  emitroom3() {
-    this.socket.emit("emitroom3")
-  }
-  openChatWindow(room) {
-    return 'hi';
-  }
   emitInvite(name) {
+    this.reciver = name;
+    if (this.sender === name) {
+      alert("you cant invite yourself ...")
+      return
+    }
     this.socket.emit('emitInvite', {
       sender: this.sender,
       reciver: name,
       RoomNumber: 0
     });
+    this.disableList();
+    this.invitSent = true;
   }
   emitJoinGame(data) {
     this.socket.emit('InviteAccapted', data)
   }
 
-  Onuserselect(name) {
-    this.reciver = name;
-    this.chat = true;
-  }
-  sendMessage() {
-    var msg = this.message.nativeElement.value
-    console.log(msg);
-    this.socket.emit('send_message', {
-      sender: this.sender,
-      reciver: this.reciver,
-      mrssage: msg
-    });
-  }
-
-
   disableList() {
-    for (let i = 0; i < this.UserList.length; i++) {
+    for (let i = 0; i < this.userNamelist.length; i++) {
       var element = <HTMLInputElement>document.getElementById(`${i}`);
       element.disabled = true;
     }
   }
+
   enableList() {
-    for (let i = 0; i < this.UserList.length; i++) {
+    for (let i = 0; i < this.userNamelist.length; i++) {
       var element = <HTMLInputElement>document.getElementById(`${i}`);
       element.disabled = false;
     }
     this.isInv = false;
+  }
+
+  cancelInvintation() {
+    this.enableList();
+    this.invitSent = false;
+    this.socket.emit("emitCancelInvite", {
+      sender: this.sender,
+      reciver: this.reciver
+    })
+  }
+
+  emitDecline(data) {
+    this.enableList();
+    this.socket.emit('emitDecline', data)
   }
 
 }

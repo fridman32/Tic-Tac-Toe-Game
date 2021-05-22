@@ -1,4 +1,12 @@
-<input placeholder="user name" type="text" #name>
-<input placeholder="passord" type="password" #pass><br>
-<button (click)=login(name.value,pass.value)>sign in</button><br>
-<p>dont have an account ? <a routerLink="/signUp">sign up now</a></p>
+<div class="container">
+
+    <div>
+        <div><span id="span1">TIC</span> <span id="span2">TAC</span> <span id="span3">TOE</span></div>
+        <h3>welcome to the game</h3>
+    </div>
+
+    <input placeholder="user name" type="text" #name><br>
+    <input placeholder="passord" type="password" #pass><br>
+    <button (click)=login(name.value,pass.value)>sign in</button><br>
+    <p>dont have an account ? <a routerLink="/signUp">sign up now</a></p>
+</div>

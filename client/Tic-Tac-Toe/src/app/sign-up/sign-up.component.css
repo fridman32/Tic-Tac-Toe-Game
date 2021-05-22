@@ -1,0 +1,32 @@
+.container{
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 15vh;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+h1{
+    padding: 5vh;
+    font-size: 8vw;
+}
+
+input{
+    margin: 0.5vh;
+    font-size: 1vw;
+    width: 20vw;
+    height: 5vh;
+}
+
+button{
+    margin: 1vh;
+    font-size: 1vw;
+    border-radius: 10px;
+    width: 20vw;
+    height: 5vh;
+    background: linear-gradient(to right, #35c3c1, #00d6b7);
+    color: white;
+}

@@ -164,4 +164,18 @@ io.on('connection', async (socket) => {
         console.log(data.message);
         io.to(listOfRooms[data.sender]).emit('message', data )
     })
+
+    socket.on("emitCancelInvite", (data) =>{
+        let socketID = listofUsersNames[data.reciver];
+        listOfRooms[data.sender] = null
+        listOfRooms[data.reciver] = null
+        io.to(socketID).emit('cancelInvite', data.sender)
+    })
+
+    socket.on('emitDecline', (data) =>{
+        let socketID = listofUsersNames[data.sender];
+        listOfRooms[data.sender] = null
+        listOfRooms[data.reciver] = null
+        io.to(socketID).emit('decline')
+    })
 });

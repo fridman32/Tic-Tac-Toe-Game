@@ -1,0 +1,49 @@
+.container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+}
+
+.container > div {
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+  }
+.list{
+    border: 2px solid black;
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.invite{
+    border: 2px solid black;
+}
+
+li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+.cancel{
+    background: linear-gradient(to right, #c35d35, #ee0808);
+}
+.accept{
+    background: linear-gradient(to right, #15ff00, #096900);
+}
+
+span{
+    padding: 2vh;
+    font-size: 2vw;
+    color: indigo;
+}
+
+button{
+    margin: 1vh;
+    font-size: 1vw;
+    border-radius: 10px;
+    width: 20vw;
+    height: 5vh;
+    color: white;
+}
+
