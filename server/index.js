@@ -33,11 +33,12 @@ const io = socket(server, {
 app.post('/login', (req, res, next) => {
     const stream = fs.readFileSync(database);
     var jsonTmp = JSON.parse(stream)
-    const findUser = jsonTmp.User.find(user => user.name == req.body.name)
+    const findUserName = jsonTmp.User.find(user => user.name == req.body.name)
+    const findUserPass = jsonTmp.User.find(user => user.pass == req.body.pass)
     //if user dosnt exsit send error
-    if (findUser == null) {
+    if (findUserName == null || findUserPass == null) {
         console.log("no user found")
-        const error = new Error('username and password inncorect')
+        const error = new Error('username or password inncorect')
         error.httpStatusCode = 400
         return next(error)
     }
@@ -68,6 +69,14 @@ app.post('/signUp', function (req, res, next) {
         error.httpStatusCode = 400
         return next(error)
     }
+    var nameCheck = req.body.name;
+    var passCheck = req.body.pass
+    if (nameCheck === null || passCheck === null){
+        console.log("field is empty");
+        const error = new Error('please fill all fields')
+        error.httpStatusCode = 400
+        return next(error)
+    }
     jsonTmp.User.push(useTmp)
     fs.writeFile(database, JSON.stringify(jsonTmp), function () {
         console.log("user saved to json");
@@ -83,6 +92,19 @@ app.post('/signUp', function (req, res, next) {
         error: error.message
     })
 })
+
+// socket.on("user_conncted", (data) => {
+//     console.log(data);
+//     if (!usersList || !usersList.find(e => e == data)) {
+//         usersListNames[data] = socket.id;
+//         usersList.push(data)
+//     } else {
+//         console.log(socket.id);
+//         usersListNames[data] = socket.id;
+//     }
+//     io.emit("login", usersList)
+// });
+
 
 io.on('connection', async (socket) => {
     console.log('user conected');
@@ -135,19 +157,23 @@ io.on('connection', async (socket) => {
     })
 
     socket.on("user_conncted", (data) => {
-        listofUsersNames[data] = socket.id;
-        listOfUsers.push(data)
+        console.log(data + " line 160");
+        if (!listOfUsers || !listOfUsers.find(e => e == data)) {
+            console.log("line 162");
+            listofUsersNames[data] = socket.id;
+            listOfUsers.push(data)
+        } else {
+            console.log(socket.id);
+            listofUsersNames[data] = socket.id;
+        }
         io.emit("login", listOfUsers)
-        // io.emit('newUser', listOfUsers)
-    })
+    });
 
-    //grop msg in game
-    // socket.on('send_message_ingame', (data) => {
-    //     //find room to send msg to
-    //     console.log(data);
-    //     var socketRoom = listOfRooms[data.sender]
-    //     console.log(socketRoom);
-    //     io.to(socketRoom).emit("new_message_ingame", data);
+
+    // socket.on("user_conncted", (data) => {
+    //     listofUsersNames[data] = socket.id;
+    //     listOfUsers.push(data)
+    //     io.emit("login", listOfUsers)
     // })
 
     socket.on('emitMove', (data) =>{
@@ -178,4 +204,4 @@ io.on('connection', async (socket) => {
         listOfRooms[data.reciver] = null
         io.to(socketID).emit('decline')
     })
-});
+}); 

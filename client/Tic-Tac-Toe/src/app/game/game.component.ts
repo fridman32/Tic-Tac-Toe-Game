@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { UserService } from '../services/user.service';
 import { CellEnum } from "../cell/CellEnum";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -34,6 +35,7 @@ export class GameComponent implements OnInit {
   xTurn: boolean;
 
   constructor(private socket: Socket,
+    private router: Router,
     private userService: UserService) { }
 
   ngOnInit(): void {
@@ -79,7 +81,6 @@ export class GameComponent implements OnInit {
     // this.currentPlayer = CellEnum.X;
     this.isGameOver = false;
     console.log(this.currentPlayer + "81");
-
     this.statusMessage = `Player ${this.turnSign}'s turn`;
     if (this.turnSign === this.currentPlayer) {
       this.xTurn = true;
@@ -118,70 +119,77 @@ export class GameComponent implements OnInit {
   }
 
 
-    emitNewGame() {
-      this.socket.emit('emitNewGame', { sender: this.userService.current_user })
-    }
-
-    emitTurn() {
-      this.socket.emit('emitTurn', { sender: this.userService.current_user })
-    }
-    emitMessage(inputMessage) {
-      console.log(inputMessage);
-
-      this.socket.emit('emitMessage', { sender: this.userService.current_user, message: inputMessage })
-    }
-
-    allowBTN() {
-      this.cellID.nativeElement.disabled = false;
-    }
-
-    disableBTN() {
-      this.cellID.nativeElement.disabled = true;
-    }
-
-    isDrow(): boolean {
-      for (const columns of this.board) {
-        for (const col of columns) {
-          if (col === CellEnum.EMPTY) {
-            return false;
-          }
-        }
-      }
-      return !this.isWin();
-    }
-
-    isWin(): boolean {
-      // horizontal
-      for (const columns of this.board) {
-        if (columns[0] === columns[1] && columns[0] === columns[2] && columns[0] !== CellEnum.EMPTY) {
-          return true;
-        }
-      }
-      //vertical
-      for (let col = 0; col < this.board[0].length; col++) {
-        if (
-          this.board[0][col] === this.board[1][col] &&
-          this.board[0][col] === this.board[2][col] &&
-          this.board[0][col] !== CellEnum.EMPTY) {
-          return true;
-        }
-      }
-      //diagonals
-      if (
-        this.board[0][0] === this.board[1][1] &&
-        this.board[0][0] === this.board[2][2] &&
-        this.board[0][0] !== CellEnum.EMPTY
-      ) {
-        return true;
-      }
-
-      if (
-        this.board[0][2] === this.board[1][1] &&
-        this.board[0][2] === this.board[2][0] &&
-        this.board[0][2] !== CellEnum.EMPTY
-      ) {
-        return true;
-      }
-      return false;
-    }
+  emitNewGame() {
+    this.socket.emit('emitNewGame', { sender: this.userService.current_user })
   }
+
+  emitTurn() {
+    this.socket.emit('emitTurn', { sender: this.userService.current_user })
+  }
+  emitMessage(inputMessage) {
+    console.log(inputMessage);
+
+    this.socket.emit('emitMessage', { sender: this.userService.current_user, message: inputMessage })
+  }
+
+  allowBTN() {
+    this.cellID.nativeElement.disabled = false;
+  }
+
+  disableBTN() {
+    this.cellID.nativeElement.disabled = true;
+  }
+
+  isDrow(): boolean {
+    for (const columns of this.board) {
+      for (const col of columns) {
+        if (col === CellEnum.EMPTY) {
+          return false;
+        }
+      }
+    }
+    return !this.isWin();
+  }
+
+  isWin(): boolean {
+    // horizontal
+    for (const columns of this.board) {
+      if (columns[0] === columns[1] && columns[0] === columns[2] && columns[0] !== CellEnum.EMPTY) {
+        return true;
+      }
+    }
+    //vertical
+    for (let col = 0; col < this.board[0].length; col++) {
+      if (
+        this.board[0][col] === this.board[1][col] &&
+        this.board[0][col] === this.board[2][col] &&
+        this.board[0][col] !== CellEnum.EMPTY) {
+        return true;
+      }
+    }
+    //diagonals
+    if (
+      this.board[0][0] === this.board[1][1] &&
+      this.board[0][0] === this.board[2][2] &&
+      this.board[0][0] !== CellEnum.EMPTY
+    ) {
+      return true;
+    }
+
+    if (
+      this.board[0][2] === this.board[1][1] &&
+      this.board[0][2] === this.board[2][0] &&
+      this.board[0][2] !== CellEnum.EMPTY
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  // exitGame() {
+  //     this.router.navigate(['/lobby'])
+  // }
+  playAgain() {
+
+  }
+}

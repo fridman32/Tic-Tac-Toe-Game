@@ -11,6 +11,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CellComponent } from './cell/cell.component';
+import { CookieService } from 'ngx-cookie-service';
 
 const socketioConfig: SocketIoConfig = { url: 'http://localhost:1000', options: {} };
 
@@ -30,7 +31,7 @@ const socketioConfig: SocketIoConfig = { url: 'http://localhost:1000', options: 
     AppRoutingModule,
     SocketIoModule.forRoot(socketioConfig),
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

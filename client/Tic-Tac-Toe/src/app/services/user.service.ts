@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -6,5 +7,7 @@ import { Injectable } from '@angular/core';
 export class UserService {
 
   current_user
-  constructor() { }
+  constructor(private cookieService: CookieService) { 
+    // this.cookieService.set('userName', this.current_user)
+  }
 }

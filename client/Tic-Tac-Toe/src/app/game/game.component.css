@@ -1,21 +1,3 @@
-/* .column{
-    border: 2px solid black;
-    width: 30vh;
-    height: 30vh;
-    padding: auto;
-    margin: auto;
-    display: inline-block;
-}
-.row{
-    border: 2px solid red;
-    width:fit-content;
-    height:fit-content;
-}
-img{
-    width: 30vh;
-    height: 30vh;
-} */
-
 .board{
     display: flex;
     flex-direction: row;
@@ -25,11 +7,32 @@ img{
 }
 
 .status{
-    color: black;
-    font-size: 1.4em;
+    color: indigo;
+    font-size: 1.5vw;
     font-weight: bold;
+    padding: 2vh;
 }
 
 .new-game{
     width: 100%;
+}
+
+
+/* .game{
+    float: left;
+    width: 75%;
+}*/
+.chat{
+    height: 20vh;
+    overflow: scroll;
+} 
+
+.exitBTN{
+    color: black;
+    background-color: red;
+    width: 6vw;
+    height: 5vh;
+    font-size: xx-large;
+    position: absolute;
+    left: 0;
 }

@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { UserService } from "../services/user.service"
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-menu',
@@ -17,6 +18,7 @@ export class MenuComponent implements OnInit {
   constructor(private http: HttpClient,
     private socket: Socket,
     private router: Router,
+    private cookieService: CookieService,
     private userService: UserService) { }
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class MenuComponent implements OnInit {
         console.log('loged in')
         if (res.statusCode === 200) {
           this.userService.current_user = name
+          this.cookieService.set('userName', name)
           this.socket.emit("user_conncted", name)
           this.router.navigate(['/lobby'])
         }

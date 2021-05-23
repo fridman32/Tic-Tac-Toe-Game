@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Router } from "@angular/router";
 import { UserService } from '../services/user.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-lobby',
@@ -26,12 +27,14 @@ export class LobbyComponent implements OnInit {
 
   constructor(private router: Router,
     private socket: Socket,
+    private cookieService: CookieService,
     private service: UserService) { }
 
   ngOnInit(): void {
     this.socket.on("login", (data) => {
-      this.userNamelist = data
-      this.sender = this.service.current_user
+      this.userNamelist = data;
+      // this.sender = this.service.current_user
+      this.sender = this.cookieService.get('userName')
     })
 
     this.socket.on('joinGame', () => { this.router.navigate(['/game']) })
@@ -100,6 +103,7 @@ export class LobbyComponent implements OnInit {
   cancelInvintation() {
     this.enableList();
     this.invitSent = false;
+    this.join = false;
     this.socket.emit("emitCancelInvite", {
       sender: this.sender,
       reciver: this.reciver
@@ -108,6 +112,7 @@ export class LobbyComponent implements OnInit {
 
   emitDecline(data) {
     this.enableList();
+    this.join = false;
     this.socket.emit('emitDecline', data)
   }
 
