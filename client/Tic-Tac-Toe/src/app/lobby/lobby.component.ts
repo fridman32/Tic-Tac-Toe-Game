@@ -31,10 +31,11 @@ export class LobbyComponent implements OnInit {
     private service: UserService) { }
 
   ngOnInit(): void {
+    this.sender = this.cookieService.get('userName');
+    this.socket.emit("user_conncted", this.sender)
     this.socket.on("login", (data) => {
       this.userNamelist = data;
       // this.sender = this.service.current_user
-      this.sender = this.cookieService.get('userName')
     })
 
     this.socket.on('joinGame', () => { this.router.navigate(['/game']) })

@@ -15,7 +15,7 @@
   <div class="grid-item list">
     <span>players online:</span>
     <li *ngFor="let user of userNamelist; index as i; first as isFirst">
-      <button id="{{i}}" (click)="emitInvite(user)" style="color: black;"> {{user}} -game invite </button>
+      <button id="{{i}}" (click)="emitInvite(user)" style="color: black;"> {{user}} - invite to play </button>
     </li>
   </div>
 

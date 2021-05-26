@@ -204,4 +204,9 @@ io.on('connection', async (socket) => {
         listOfRooms[data.reciver] = null
         io.to(socketID).emit('decline')
     })
+
+    socket.on('emitExit', (data) =>{
+        let socketID = listofUsersNames[data.sender];
+        io.to( listOfRooms[socketID]).emit('exitGame')
+    })
 }); 

@@ -3,6 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { UserService } from '../services/user.service';
 import { CellEnum } from "../cell/CellEnum";
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-game',
@@ -36,7 +37,8 @@ export class GameComponent implements OnInit {
 
   constructor(private socket: Socket,
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private cookieService: CookieService) { }
 
   ngOnInit(): void {
     this.socket.on("getMySign", (data) => {
@@ -63,6 +65,13 @@ export class GameComponent implements OnInit {
       console.log(data);
       console.log("line 54");
       this.messageData = this.messageData + `<div>${data.sender}: ${data.message} <div/>`;
+    })
+    this.socket.on('exitGame', (data) => {
+      console.log("user exit the game");
+      if (this.userService.current_user !== this.cookieService.get('userName')){
+        alert("your oponent has left the game")
+        this.router.navigate(["/lobby"]);
+      }
     })
   }
 
@@ -189,7 +198,15 @@ export class GameComponent implements OnInit {
   // exitGame() {
   //     this.router.navigate(['/lobby'])
   // }
-  playAgain() {
+
+  emitExit() {
+    // if (this.userService.current_user == this.cookieService.get('userName')) {
+      this.socket.emit('emitExit', { sender: this.cookieService.get('userName') });
+      this.router.navigate(["/lobby"]);
+    // }else{
+    //   alert("your oponent has left the game")
+    //   this.router.navigate(["/lobby"]);
+    // }
 
   }
 }
