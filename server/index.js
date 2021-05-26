@@ -206,7 +206,10 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('emitExit', (data) =>{
+        console.log("lone 209" + data.sender);
         let socketID = listofUsersNames[data.sender];
-        io.to( listOfRooms[socketID]).emit('exitGame')
+        io.to( listOfRooms[data.sender] ).emit('exitGame', data.sender)
+        console.log(listOfRooms[socketID]);
+        console.log(socketID);
     })
 }); 

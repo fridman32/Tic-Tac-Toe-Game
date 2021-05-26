@@ -68,8 +68,11 @@ export class GameComponent implements OnInit {
     })
     this.socket.on('exitGame', (data) => {
       console.log("user exit the game");
-      if (this.userService.current_user !== this.cookieService.get('userName')){
-        alert("your oponent has left the game")
+      if (data !== this.cookieService.get('userName')){   
+        alert("you left the game");
+        this.router.navigate(["/lobby"]);
+      }else{
+        alert("your oponent has left the game");
         this.router.navigate(["/lobby"]);
       }
     })
@@ -202,7 +205,7 @@ export class GameComponent implements OnInit {
   emitExit() {
     // if (this.userService.current_user == this.cookieService.get('userName')) {
       this.socket.emit('emitExit', { sender: this.cookieService.get('userName') });
-      this.router.navigate(["/lobby"]);
+      // this.router.navigate(["/lobby"]);
     // }else{
     //   alert("your oponent has left the game")
     //   this.router.navigate(["/lobby"]);
