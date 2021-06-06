@@ -53,4 +53,4 @@ jobs:
         app-name: 'TicTacToeGameYF'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1497b1ab9ae548bba06d72360efffa88 }}
-        package: .
+        package: ./dist/Tic-Tac-Toe-Game
