@@ -20,7 +20,9 @@ app.use(cors());
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json({ limit: "50mb" }))
 
-const server = app.listen(1000, () => {
+const port = process.env.PORT || 1000;
+
+const server = app.listen(port, () => {
     console.log('server is working')
 })
 
