@@ -15,7 +15,7 @@ An online game of tic tac toe.  The players must register and sign-in in order t
 
 The players must sign up for the game with name and password in order to play.
 
-![Registretion page ](/assets/game-photos/sign-up-page.jpeg?raw=true "sign-up-page")
+![Registretion page ](client/Tic-Tac-Toe/src/assets/game-photos/sign-up-page.jpeg?raw=true "sign-up-page")
 
 ### Sign-in page
 
