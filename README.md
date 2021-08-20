@@ -21,19 +21,19 @@ The players must sign up for the game with name and password in order to play.
 
 After regesration or if you have signed in once before you need to sign in with your details.
 
-![Sign-in page ](/assets/game-photos/sign-in-page.jpeg "sign-in-page")
+![Sign-in page ](client/Tic-Tac-Toe/src/assets/game-photos/sign-in-page.jpeg "sign-in-page")
 
 ### Lobby
 
 In the lobby all the players can see who is connected and all the other players.
 Players can invite each other to play together.
 
-![Lobby page ](/assets/game-photos/lobby-page.jpeg "lobby-page")
+![Lobby page ](client/Tic-Tac-Toe/src/assets/game-photos/lobby-page.jpeg "lobby-page")
 
 ### Game page
 
 Eache player can play only when is its turn and players can send masseges in the chat.
 
-![Game page ](/assets/game-photos/game-page.jpeg "Game-page")
+![Game page ](client/Tic-Tac-Toe/src/assets/game-photos/game-page.jpeg "Game-page")
 
 
